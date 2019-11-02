@@ -32,13 +32,6 @@ namespace TodoAngular
                 opt.UseInMemoryDatabase("Todos"));
 
             services.AddCors();
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("CorsPolicy",
-            //        builder => builder.AllowAnyOrigin()
-            //            .AllowAnyMethod()
-            //            .AllowAnyHeader());
-            //});
 
             services.AddControllers();
         }
@@ -56,8 +49,6 @@ namespace TodoAngular
 			}
 
             app.UseRouting();
-
-            //app.UseCors("CorsPolicy");
 
             app.UseCors(
             options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
