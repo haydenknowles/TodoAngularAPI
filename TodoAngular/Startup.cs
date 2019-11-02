@@ -5,14 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using TodoAngular.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TodoAngular
 {
@@ -28,11 +27,11 @@ namespace TodoAngular
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddDbContext<TodoContext>(opt =>
                 opt.UseInMemoryDatabase("Todos"));
 
+            services.AddCors();
             //services.AddCors(options =>
             //{
             //    options.AddPolicy("CorsPolicy",
@@ -42,10 +41,6 @@ namespace TodoAngular
             //});
 
             services.AddControllers();
-            //services.AddSpaStaticFiles(configuration =>
-            //{
-            //    configuration.RootPath = "todo-angular/dist";
-            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,21 +50,17 @@ namespace TodoAngular
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            //app.UseCors("CorsPolicy");
-            app.UseHttpsRedirection();
-            //app.UseStaticFiles();
-            //app.UseSpaStaticFiles();
-
-            //app.UseMvc(routes =>
-            //{
-            //    routes.MapRoute(
-            //        name: "default",
-            //        template: "{controller}/{action=Index}/{id?}");
-            //});
+			else
+			{
+				app.UseHsts();
+			}
 
             app.UseRouting();
-            app.UseAuthentication();
+
+            //app.UseCors("CorsPolicy");
+
+            app.UseCors(
+            options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseEndpoints(endpoints =>
             {
